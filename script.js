@@ -24,12 +24,9 @@ const formMsg = document.getElementById('form-msg');
 // Initialize EmailJS early if SDK and public key are present so sendForm can be used later.
 (function initEmailJSIfAvailable(){
   const ejPub = document.querySelector('meta[name="emailjs-public-key"]')?.getAttribute('content')?.trim();
+  // Prefer a local vendor copy to avoid browser tracking-protection blocking third-party CDNs
+  // During development place the official SDK at ./vendor/email.min.js or replace with the CDN for production.
   const sdkUrls = [
-    // try reliable CDNs and a local vendor copy as a last resort
-    'https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js',
-    'https://unpkg.com/emailjs-com@3/dist/email.min.js',
-    'https://cdn.emailjs.com/sdk/3.2.0/email.min.js',
-    'https://cdn.emailjs.com/sdk/2.4.1/email.min.js',
     './vendor/email.min.js'
   ];
 
