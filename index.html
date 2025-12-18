@@ -25,9 +25,9 @@
     <meta name="emailjs-service-id" content="service_yv57zij">
     <meta name="emailjs-template-id" content="template_hdtipca">
     <meta name="emailjs-public-key" content="bIr-sCZ49Rr2XSCJG">
-    <!-- Load local EmailJS shim first to avoid tracking-protection CDN blocks during development.
-      For production, replace with the official EmailJS SDK or implement server-side sending. -->
-    <script src="vendor/email.min.js"></script>
+    <!-- Load official EmailJS SDK (CDN) with a local shim fallback for development.
+         If the CDN is blocked (adblock/tracking protection), the local vendor/email.min.js shim will load. -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" crossorigin="anonymous" onerror="(function(){var s=document.createElement('script');s.src='vendor/email.min.js';document.head.appendChild(s);})();"></script>
 </head>
 <body>
   <header class="site-header">
