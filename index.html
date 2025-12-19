@@ -365,17 +365,45 @@
       copyToClipboard(text).then(()=> showShareMsg('Package details copied — paste to share')).catch(()=> showShareMsg('Could not copy package info'));
     }
 
-    // Simple booking prompt — you can replace this with a proper booking flow
+    // Booking flow: prefill the contact form and prompt user to complete and submit
     function selectPackage(title, price){
-      const name = prompt('Please enter your name to book ' + title + ' (Price: ' + price + ')');
-      const phone = prompt('Phone number');
-      if(name && phone){
-        showShareMsg('Thanks ' + name + '! We will contact you at ' + phone + ' about ' + title);
-        // Optionally share booking details
-        // navigator.share / API call could go here
-      } else {
-        showShareMsg('Booking cancelled');
+      const form = document.getElementById('contact-form');
+      if(!form){
+        alert('Contact form not found on this page.');
+        return;
       }
+
+      // Set package select (add option if needed)
+      const pkgSelect = form.querySelector('[name="package"]');
+      if(pkgSelect){
+        let found = false;
+        Array.from(pkgSelect.options).forEach(opt => { if(opt.value === title) found = true; });
+        if(!found){
+          const opt = new Option(title, title);
+          pkgSelect.add(opt);
+        }
+        pkgSelect.value = title;
+      }
+
+      // Prefill the message field with booking details
+      const messageField = form.querySelector('[name="message"]');
+      if(messageField){
+        const prefill = `I would like to book: ${title} (Price: ${price}). Please call me to confirm and finalize the booking.`;
+        messageField.value = prefill;
+      }
+
+      // Scroll to contact section and focus the name field
+      const contactSection = document.getElementById('contact');
+      if(contactSection){
+        contactSection.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+      const nameField = form.querySelector('[name="name"]');
+      if(nameField) nameField.focus();
+
+      // Show a friendly notice in the form message area and via shareMsg
+      try{ if(typeof showShareMsg === 'function') showShareMsg('Package details prefilled. Please complete the form and submit to book.'); }catch(_){ }
+      const formMsgEl = document.getElementById('form-msg');
+      if(formMsgEl) formMsgEl.textContent = 'Package prefilled — please fill the rest of the details and click Send Message.';
     }
   </script>
 </body>
